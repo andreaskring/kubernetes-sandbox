@@ -27,6 +27,13 @@ spec:
         volumeMounts:
           - name: web-pv
             mountPath: "/data"
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/sh", "-c", "hostname -i >> /data/ips"]
+          preStop:
+            exec:
+              command: ["/bin/sh", "-c", "echo 'remove' >> /data/ips; hostname -i >> /data/ips"]
       restartPolicy: Always
       volumes:
         - name: web-pv
